@@ -66,48 +66,51 @@ public class Helperclass extends SQLiteOpenHelper{
         Toast.makeText(context,"info added",Toast.LENGTH_LONG).show();
 
     }
-    public void get(SQLiteDatabase sqLiteDatabase) {
+    public String get(SQLiteDatabase sqLiteDatabase) {
         String coloumn[] = {Helperclass.G_ID, Helperclass.G_QUESTION, Helperclass.G_OPT1, Helperclass.G_OPT2, Helperclass.G_ANSWER};
         Cursor cursor = sqLiteDatabase.query(Helperclass.G_TABLE_NAME, coloumn, null, null, null, null, null);
-
+        int id; String  question,opt1,opt2,answer,x;
         if(cursor.getCount()==0){
             Toast.makeText(context,"Table in the database is empty ",Toast.LENGTH_LONG).show();
         }
 
+        StringBuffer sb=new StringBuffer();
         while (cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String question = cursor.getString(1);
-            String opt1 = cursor.getString(2);
-            String opt2 = cursor.getString(3);
-            String answer = cursor.getString(4);
-            Toast.makeText(context, id + " " + question + " " + opt1 + " " + opt2 + " " + answer, Toast.LENGTH_LONG).show();
+
+             id = cursor.getInt(0);
+            question = cursor.getString(1);
+             opt1 = cursor.getString(2);
+           opt2 = cursor.getString(3);
+             answer = cursor.getString(4);
+            sb.append(id+" "+question+" "+opt1+" "+opt2+" "+answer+"\n");
         }
+        Toast.makeText(context,sb,Toast.LENGTH_LONG).show();
+        return sb.toString();
 
 
     }
     //delete specific row
     public  void delete(SQLiteDatabase sqLiteDatabase,String oldname) {
-
+        String question="";
         String coloumn[] = {Helperclass.G_ID, Helperclass.G_QUESTION, Helperclass.G_OPT1, Helperclass.G_OPT2, Helperclass.G_ANSWER};
         Cursor cursor = sqLiteDatabase.query(Helperclass.G_TABLE_NAME, coloumn, null, null, null, null, null);
-        if(cursor.getCount()==0){
-            Toast.makeText(context,"Table in the database is empty can't be deleted",Toast.LENGTH_LONG).show();
+        while (cursor.moveToNext()) {
+            question = cursor.getString(1);
+        }
+        if (oldname.equals(question)&& cursor.getCount()!=0) {
+            String whereargs[] = {oldname};
+            sqLiteDatabase.delete(Helperclass.G_TABLE_NAME, Helperclass.G_QUESTION + " =? ", whereargs);
+            Toast.makeText(context, "Delted successfully", Toast.LENGTH_SHORT).show();
+        }
+        if (cursor.getCount() == 0) {
+            Toast.makeText(context, "Table in the database is empty can't be deleted", Toast.LENGTH_LONG).show();
+        }
+        //(!oldname.equals(question))
+        if(!oldname.equals(question))
+        {
+            Toast.makeText(context, "Delted unsuccessfully wrong QName", Toast.LENGTH_SHORT).show();
         }
 
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String  question = cursor.getString(1);
-            String opt1 = cursor.getString(2);
-            String opt2 = cursor.getString(3);
-            String answer = cursor.getString(4);
-            if(oldname.equals(question)){
-                String whereargs[] = {oldname};
-                sqLiteDatabase.delete(Helperclass.G_TABLE_NAME, Helperclass.G_QUESTION + " =? ", whereargs);
-                Toast.makeText(context, "Delted successfully", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(context, "Delted unsuccessfully wrong QName", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
     public  void deletholetable(SQLiteDatabase sqLiteDatabase)
     {

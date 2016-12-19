@@ -59,7 +59,7 @@
         android:hint="delete specificrow:provide questionname"
         android:id="@+id/editText5" />
     <Button
-        android:text="delete specific row"
+        android:text="delet specific row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button3"
@@ -72,4 +72,5 @@
         android:id="@+id/button4"
        android:onClick="deletholetable"
         />
+
 </LinearLayout>

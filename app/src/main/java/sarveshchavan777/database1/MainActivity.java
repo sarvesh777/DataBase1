@@ -47,7 +47,6 @@ public class MainActivity extends Activity {
     public void getdata(View view) {
         SQLiteDatabase sqLiteDatabase = helperclass.getWritableDatabase();
         helperclass.get(sqLiteDatabase);
-
     }
 
     public void deletable(View view) {
